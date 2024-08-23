@@ -1,0 +1,68 @@
+.general-container {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+  }
+  
+  .main-container {
+    background-color: #5dc5dc;
+    width: 363px;
+    height: 446px; /* Maintain height as 446px */
+    border-radius: 40px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+  }
+  .sf-image {
+    padding-bottom: 15px;
+  }
+  img {
+    height: 58px;
+    width: 66px;
+    border-radius: 23px;
+  }
+  
+  .subtitle-action-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px; /* Add margin to create space below subtitle-action */
+  }
+  
+  .input-form {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;
+    width: 100%; /* Ensure full width */
+  }
+  
+  .title {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px; /* Add margin to create space below title */
+  }
+  
+  input {
+    color: black !important;
+    margin: 10px 0; /* Adjust vertical margin between inputs */
+    height: 30px;
+    width: 100%; /* Ensure full width */
+    border-radius: 11px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between; /* Space buttons evenly */
+    width: 100%; /* Ensure full width */
+  }
+  
+  button {
+    margin: 10px 0; /* Adjust vertical margin between buttons */
+    height: 22px;
+    width: 48%; /* Adjust button width as needed */
+    border-radius: 11px;
+    background-color: #00526c;
+    color: white;
+  }
+  

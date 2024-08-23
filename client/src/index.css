@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Estilos generales
+*/
+
+body{
+  background-color: #0c3f55;
+  color: white;
+}
+
+/* ScrollBar en Alumnos Registrados */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 12px;
+  
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  margin-top: 15px;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #50C4CE;
+  border-radius: 10px;
+  height: 50px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #791b1b;
+}
+
+/* input color al seleccionar */
+.inputFocus:focus {
+  border-color: #50C4CE;
+  outline: none;
+}
+
+.selectFocus:focus {
+  border-color: #50C4CE; /* Color del borde al enfocar */
+  outline: none; /* Opcional: elimina el borde de enfoque predeterminado */
+}
+
+.selectFocus option {
+  color: black;
+}
