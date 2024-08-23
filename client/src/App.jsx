@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./routes";
 
@@ -15,9 +15,9 @@ import { PlanProvider } from "./context/PlanContext";
 import Reportes from "./pages/Reportes";
 
 /* esto es para el deploy */
-import { disableReactDevTools } from "@fvilers/disable-react-devtools";
+/* import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 
-if (process.env.NODE_ENV === "production") disableReactDevTools();
+if (process.env.NODE_ENV === "production") disableReactDevTools(); */
 
 function App() {
     return (
@@ -33,6 +33,9 @@ function App() {
                                     path="/register"
                                     element={<Register />}
                                 />
+
+                                {/* Redirigir a la página principal si la ruta no coincide */}
+                                <Route path="*" element={<Navigate to="/" />} />
 
                                 {/* aca las paginas privadas al logearse */}
                                 <Route element={<ProtectedRoute />}>
