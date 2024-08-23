@@ -13,8 +13,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/auth.routes.js";
 import alumnosRoutes from "./routes/alumnos.routes.js";
 import planRoutes from "./routes/plan.routes.js";
-//import { FRONTEND_URL } from "./config.js";
-import { FRONTEND_URL, TOKEN_SECRET } from "./config.js";
+import { FRONTEND_URL, PORT, TOKEN_SECRET } from "./config.js";
 
 // Connecting to MongoDB using Mongoose
 mongoose
@@ -23,7 +22,9 @@ mongoose
         console.log("MongoDB is connected");
 
         // Listening to requests if DB connection is successful
-        app.listen(4000, "localhost", () => console.log("Server on port 4000"));
+        app.listen(PORT, "localhost", () =>
+            console.log(`Server on port ${PORT}`)
+        );
     })
     .catch((err) => console.log(err));
 
