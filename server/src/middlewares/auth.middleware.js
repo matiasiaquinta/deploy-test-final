@@ -9,10 +9,7 @@ export const auth = (req, res, next) => {
         if (!token)
             return res
                 .status(401)
-                .json(
-                    { message: "No token, authorization denied" },
-                    { token: token }
-                );
+                .json({ message: "No token, authorization denied" });
 
         jwt.verify(token, TOKEN_SECRET, (error, user) => {
             if (error) {
