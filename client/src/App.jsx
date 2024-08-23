@@ -40,8 +40,6 @@ function App() {
 
                                 {/* aca las paginas privadas al logearse */}
                                 <Route element={<ProtectedRoute />}>
-                                    <Route path="/login" element={<Login />} />
-
                                     <Route path="/" element={<Home />} />
                                     <Route
                                         path="/reportes"
