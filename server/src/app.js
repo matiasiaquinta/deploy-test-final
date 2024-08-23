@@ -32,9 +32,9 @@ mongoose
 console.log("TOKEN_SECRET:", TOKEN_SECRET);
 
 // Resolving dirname for ES module
-const __filename = fileURLToPath(import.meta.url);
+/* const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-console.log(__dirname);
+console.log(__dirname); */
 
 const app = express();
 
@@ -64,13 +64,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api", alumnosRoutes);
 app.use("/api", planRoutes);
 
-// Use the client app
+/* // Use the client app
 app.use(express.static(path.join(__dirname, "../../client/dist")));
 
 // Render client for any path
 app.get("*", (req, res) =>
     res.sendFile(path.join(__dirname, "../../client/dist/index.html"))
-);
+); */
 
 app.get("/test-db", async (req, res) => {
     try {
