@@ -29,16 +29,19 @@ function App() {
                             {/* navbar */}
                             <Routes>
                                 <Route path="/login" element={<Login />} />
+
                                 <Route
                                     path="/register"
                                     element={<Register />}
                                 />
 
                                 {/* Redirigir a la página principal si la ruta no coincide */}
-                                <Route path="*" element={<Navigate to="/" />} />
+                                {/* <Route path="*" element={<Navigate to="/" />} /> */}
 
                                 {/* aca las paginas privadas al logearse */}
                                 <Route element={<ProtectedRoute />}>
+                                    <Route path="/login" element={<Login />} />
+
                                     <Route path="/" element={<Home />} />
                                     <Route
                                         path="/reportes"
