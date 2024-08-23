@@ -34,7 +34,7 @@ export const register = async (req, res) => {
             sameSite: "None", // Permitir el envío de cookies en solicitudes cross-site
         });
 
-        res.cookie("token", token);
+        //res.cookie("token", token);
         res.json({
             id: userSaved._id,
             username: userSaved.username,
