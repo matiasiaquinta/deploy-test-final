@@ -14,7 +14,7 @@ import authRoutes from "./routes/auth.routes.js";
 import alumnosRoutes from "./routes/alumnos.routes.js";
 import planRoutes from "./routes/plan.routes.js";
 //import { FRONTEND_URL } from "./config.js";
-import { TOKEN_SECRET } from "./config.js";
+import { FRONTEND_URL, TOKEN_SECRET } from "./config.js";
 
 // Connecting to MongoDB using Mongoose
 mongoose
@@ -39,7 +39,7 @@ const app = express();
 
 app.use(
     cors({
-        origin: "http://localhost:5173",
+        origin: FRONTEND_URL,
         credentials: true, // si necesitas que las cookies sean enviadas entre el frontend y backend
     })
 );
