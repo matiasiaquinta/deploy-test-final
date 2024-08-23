@@ -13,22 +13,17 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/auth.routes.js";
 import alumnosRoutes from "./routes/alumnos.routes.js";
 import planRoutes from "./routes/plan.routes.js";
-import { FRONTEND_URL, PORT, TOKEN_SECRET } from "./config.js";
+import { FRONTEND_URL, MONGODB_URI, PORT, TOKEN_SECRET } from "./config.js";
 
-// Connecting to MongoDB using Mongoose
+// Conectar a MongoDB
 mongoose
-    .connect(process.env.MONGODB_URI, { dbName: "sinfronteras-api" })
+    .connect(MONGODB_URI, { dbName: "sinfronteras-api" })
     .then(() => {
         console.log("MongoDB is connected");
-
-        // Listening to requests if DB connection is successful
-        app.listen(PORT, "localhost", () =>
-            console.log(`Server on port ${PORT}`)
-        );
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log("Error connecting to MongoDB:", err));
 
-// Sin esto explotaba mi app. Porque no se asignaba el secret
+// Imprimir el secret para depuración
 console.log("TOKEN_SECRET:", TOKEN_SECRET);
 
 // Resolving dirname for ES module

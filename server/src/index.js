@@ -1,7 +1,8 @@
 import app from "./app.js";
 import { PORT } from "./config.js";
 
-app.listen(PORT, () => {
+// Inicia el servidor
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server on port ${PORT}`);
 });
 /* import { PORT } from "./config.js";
