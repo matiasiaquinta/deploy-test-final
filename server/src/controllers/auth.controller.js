@@ -71,6 +71,8 @@ export const login = async (req, res) => {
             httpOnly: process.env.NODE_ENV === "production",
             secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
             //sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
+            sameSite: "Lax", // Lax es generalmente seguro para la mayoría de aplicaciones
+            maxAge: 24 * 60 * 60 * 1000,
         });
         res.json({
             id: userFound._id,
