@@ -28,13 +28,13 @@ export const register = async (req, res) => {
         const token = await createAccessToken({ id: userSaved._id });
 
         // Configurar la cookie con el token
-        /*         res.cookie("token", token, {
-            httpOnly: true,
+        res.cookie("token", token, {
+            httpOnly: true, // Solo accesible desde el backend
             secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
-            sameSite: "None", // Permitir el envío de cookies en solicitudes cross-site
-        }); */
+            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
+        });
 
-        res.cookie("token", token);
+        //res.cookie("token", token);
         res.json({
             id: userSaved._id,
             username: userSaved.username,
