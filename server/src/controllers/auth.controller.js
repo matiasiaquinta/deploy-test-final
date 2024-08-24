@@ -27,7 +27,14 @@ export const register = async (req, res) => {
         const userSaved = await newUser.save();
         const token = await createAccessToken({ id: userSaved._id });
 
-        res.cookie("token", token);
+        //DEPLOY PRODUCTION
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
+        });
+
+        //res.cookie("token", token);
         res.json({
             id: userSaved._id,
             username: userSaved.username,
@@ -60,10 +67,17 @@ export const login = async (req, res) => {
         const token = await createAccessToken({ id: userFound._id });
 
         // Configurar la cookie con el token
+        //res.cookie("token", token, {
+        //    httpOnly: true, // Solo accesible desde el backend
+        //    secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
+        //    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
+        //});
+
+        //DEPLOY PRODUCTION
         res.cookie("token", token, {
-            //httpOnly: true, // Solo accesible desde el backend
-            //secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
-            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
         });
 
         //res.cookie("token", token);
@@ -106,12 +120,21 @@ export const verifyToken = async (req, res) => {
 };
 
 export const logout = (req, res) => {
+    //DEPLOY PRODUCTION
     res.cookie("token", "", {
         httpOnly: true,
         secure: true,
         expires: new Date(0),
+        sameSite: "None",
     });
     return res.sendStatus(200);
+
+    //res.cookie("token", "", {
+    //    httpOnly: true,
+    //    secure: true,
+    //    expires: new Date(0),
+    //});
+    //return res.sendStatus(200);
 };
 
 //export const profile = async (req, res) => {
