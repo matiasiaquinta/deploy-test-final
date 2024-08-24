@@ -29,9 +29,9 @@ export const register = async (req, res) => {
 
         //DEPLOY PRODUCTION
         res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "None",
+            httpOnly: true, // Solo accesible desde el backend
+            secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
+            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
         });
 
         //res.cookie("token", token);
@@ -67,18 +67,18 @@ export const login = async (req, res) => {
         const token = await createAccessToken({ id: userFound._id });
 
         // Configurar la cookie con el token
-        //res.cookie("token", token, {
-        //    httpOnly: true, // Solo accesible desde el backend
-        //    secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
-        //    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
-        //});
+        res.cookie("token", token, {
+            httpOnly: process.env.NODE_ENV === "production",
+            secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
+            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
+        });
 
         //DEPLOY PRODUCTION
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "None",
-        });
+        //res.cookie("token", token, {
+        //    httpOnly: true,
+        //    secure: true,
+        //    sameSite: "None",
+        //});
 
         //res.cookie("token", token);
         res.json({
@@ -105,6 +105,9 @@ export const verifyToken = async (req, res) => {
                 return res.status(401).json({ message: "No autorizado" });
             }
 
+            console.log("token01: ", token);
+            console.log("NODE_ENV: ", process.env.NODE_ENV);
+
             const userFound = await User.findById(user.id);
             if (!userFound) {
                 return res.status(401).json({ message: "No autorizado" });
@@ -123,9 +126,9 @@ export const logout = (req, res) => {
     //DEPLOY PRODUCTION
     res.cookie("token", "", {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
         expires: new Date(0),
-        sameSite: "None",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
     });
     return res.sendStatus(200);
 

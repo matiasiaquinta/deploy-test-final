@@ -1,12 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./routes";
-
 import Register from "./pages/Register";
 import { AlumnoForm } from "./pages/AlumnoForm";
 import { AlumnoProvider } from "./context/AlumnosContext";
 import { Login } from "./pages/Login";
-//PAGES
+// PAGES
 import Home from "./pages/Home";
 import Planes from "./pages/Planes";
 import { Alumnos } from "./pages/Alumnos";
@@ -29,16 +28,10 @@ function App() {
                             {/* navbar */}
                             <Routes>
                                 <Route path="/login" element={<Login />} />
-
                                 <Route
                                     path="/register"
                                     element={<Register />}
                                 />
-
-                                {/* Redirigir a la página principal si la ruta no coincide */}
-                                {/* <Route path="*" element={<Navigate to="/" />} /> */}
-
-                                {/* aca las paginas privadas al logearse */}
                                 <Route element={<ProtectedRoute />}>
                                     <Route path="/" element={<Home />} />
                                     <Route

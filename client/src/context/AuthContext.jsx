@@ -40,7 +40,10 @@ export const AuthProvider = ({ children }) => {
     const signin = async (user) => {
         try {
             const res = await loginRequest(user);
-            //console.log(res);
+
+            localStorage.setItem("token", res.data.token);
+            console.log(res.data.token);
+
             setUser(res.data);
             setIsAuthenticated(true);
         } catch (error) {
