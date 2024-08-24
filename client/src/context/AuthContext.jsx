@@ -42,8 +42,8 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await loginRequest(user);
 
-            //localStorage.setItem("token", res.data.token);
-            //console.log(res.data.token);
+            localStorage.setItem("token", res.data.token);
+            console.log(res.data.token);
 
             setUser(res.data);
             setIsAuthenticated(true);
