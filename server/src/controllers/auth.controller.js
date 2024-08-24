@@ -29,7 +29,7 @@ export const register = async (req, res) => {
 
         //DEPLOY PRODUCTION
         res.cookie("token", token, {
-            httpOnly: false, // Solo accesible desde el backend
+            httpOnly: true, // Solo accesible desde el backend
             secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
         });
@@ -68,9 +68,9 @@ export const login = async (req, res) => {
 
         // Configurar la cookie con el token
         res.cookie("token", token, {
-            httpOnly: false,
+            httpOnly: process.env.NODE_ENV === "production",
             secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
-            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
+            //sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
         });
         res.json({
             id: userFound._id,
@@ -131,7 +131,7 @@ export const verifyToken = async (req, res) => {
 export const logout = (req, res) => {
     //DEPLOY PRODUCTION
     res.cookie("token", "", {
-        httpOnly: false,
+        httpOnly: true,
         secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
         expires: new Date(0),
         sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
