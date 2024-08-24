@@ -42,14 +42,18 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await loginRequest(user);
 
-            // Verifica que la respuesta contiene el token
-            console.log(res.data); // Añade este log para verificar la estructura de la respuesta
+            // Verifica el contenido de la respuesta
+            console.log("Response Data:", res.data);
 
-            // Asegúrate de que el token esté presente en res.data.token
+            // Almacena el token en localStorage
             if (res.data.token) {
                 localStorage.setItem("token", res.data.token);
+                console.log(
+                    "Token stored in localStorage:",
+                    localStorage.getItem("token")
+                );
             } else {
-                console.error("Token no encontrado en la respuesta");
+                console.error("Token not found in response");
             }
 
             setUser(res.data);
