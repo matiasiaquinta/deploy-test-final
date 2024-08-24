@@ -72,6 +72,12 @@ export const login = async (req, res) => {
             secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
         });
+        res.json({
+            id: userFound._id,
+            username: userFound.username,
+            email: userFound.email,
+            token,
+        });
 
         //DEPLOY PRODUCTION
         //res.cookie("token", token, {
@@ -81,13 +87,13 @@ export const login = async (req, res) => {
         //});
 
         //res.cookie("token", token);
-        res.json({
-            id: userFound._id,
-            username: userFound.username,
-            email: userFound.email,
-            createdAt: userFound.createdAt,
-            updatedAt: userFound.updatedAt,
-        });
+        //res.json({
+        //    id: userFound._id,
+        //    username: userFound.username,
+        //    email: userFound.email,
+        //    createdAt: userFound.createdAt,
+        //    updatedAt: userFound.updatedAt,
+        //});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

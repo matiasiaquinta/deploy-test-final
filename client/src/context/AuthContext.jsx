@@ -42,8 +42,15 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await loginRequest(user);
 
-            localStorage.setItem("token", res.data.token);
-            console.log(res.data.token);
+            // Verifica que la respuesta contiene el token
+            console.log(res.data); // Añade este log para verificar la estructura de la respuesta
+
+            // Asegúrate de que el token esté presente en res.data.token
+            if (res.data.token) {
+                localStorage.setItem("token", res.data.token);
+            } else {
+                console.error("Token no encontrado en la respuesta");
+            }
 
             setUser(res.data);
             setIsAuthenticated(true);
