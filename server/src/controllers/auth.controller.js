@@ -118,11 +118,17 @@ export const verifyToken = async (req, res) => {
             if (!userFound) {
                 return res.status(401).json({ message: "No autorizado" });
             } else {
-                return res.json({
-                    id: userFound._id,
-                    username: userFound.username,
-                    email: userFound.email,
-                });
+                return res
+                    .cookie("token", token, {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === "production", // secure true solo en https
+                        sameSite: "strict",
+                    })
+                    .json({
+                        id: userFound._id,
+                        username: userFound.username,
+                        email: userFound.email,
+                    });
             }
         });
     }
