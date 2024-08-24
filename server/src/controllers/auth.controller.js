@@ -62,7 +62,7 @@ export const login = async (req, res) => {
         // Configurar la cookie con el token
         res.cookie("token", token, {
             //httpOnly: true, // Solo accesible desde el backend
-            secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
+            //secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
         });
 
