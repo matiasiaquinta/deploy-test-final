@@ -29,7 +29,7 @@ export const register = async (req, res) => {
 
         //DEPLOY PRODUCTION
         res.cookie("token", token, {
-            httpOnly: true, // Solo accesible desde el backend
+            httpOnly: false, // Solo accesible desde el backend
             secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
         });
@@ -68,7 +68,7 @@ export const login = async (req, res) => {
 
         // Configurar la cookie con el token
         res.cookie("token", token, {
-            //httpOnly: process.env.NODE_ENV === "production",
+            httpOnly: false,
             secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
         });
@@ -111,24 +111,18 @@ export const verifyToken = async (req, res) => {
                 return res.status(401).json({ message: "No autorizado" });
             }
 
-            console.log("token01: ", token);
+            console.log("token: ", token);
             console.log("NODE_ENV: ", process.env.NODE_ENV);
 
             const userFound = await User.findById(user.id);
             if (!userFound) {
                 return res.status(401).json({ message: "No autorizado" });
             } else {
-                return res
-                    .cookie("token", token, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === "production", // secure true solo en https
-                        sameSite: "strict",
-                    })
-                    .json({
-                        id: userFound._id,
-                        username: userFound.username,
-                        email: userFound.email,
-                    });
+                return res.json({
+                    id: userFound._id,
+                    username: userFound.username,
+                    email: userFound.email,
+                });
             }
         });
     }
@@ -137,7 +131,7 @@ export const verifyToken = async (req, res) => {
 export const logout = (req, res) => {
     //DEPLOY PRODUCTION
     res.cookie("token", "", {
-        httpOnly: true,
+        httpOnly: false,
         secure: process.env.NODE_ENV === "production", // Solo enviar sobre HTTPS en producción
         expires: new Date(0),
         sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // None para cross-site en producción, Lax en desarrollo
