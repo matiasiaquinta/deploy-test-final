@@ -36,7 +36,7 @@ export const getAlumnosPagosRequest = async (mes, año) => {
 
 // Obtiene un alumno especifico
 export const getAlumnoRequest = (id) => axios.get(`/alumnos/${id}`);
-/*
+
 // Crear Alumno
 export const createAlumnoRequest = async (alumno) => {
     try {
@@ -53,28 +53,28 @@ export const createAlumnoRequest = async (alumno) => {
         );
         throw error;
     }
-}; */
+};
 
 // Crear Alumno con validación
-export const createAlumnoRequest = async (alumno) => {
-    try {
-        // Obtener el esquema del backend
-        const schema = await getAlumnoSchemaRequest();
-
-        // Validar los datos del alumno usando Zod
-        schema.parse(alumno);
-
-        // Si pasa la validación, enviar la solicitud al servidor
-        const response = await axios.post("/alumnos", alumno);
-        return response.data;
-    } catch (error) {
-        console.error(
-            "Error al crear el alumno:",
-            error.response ? error.response.data : error.message
-        );
-        throw error;
-    }
-};
+//export const createAlumnoRequest = async (alumno) => {
+//    try {
+//        // Obtener el esquema del backend
+//        const schema = await getAlumnoSchemaRequest();
+//
+//        // Validar los datos del alumno usando Zod
+//        schema.parse(alumno);
+//
+//        // Si pasa la validación, enviar la solicitud al servidor
+//        const response = await axios.post("/alumnos", alumno);
+//        return response.data;
+//    } catch (error) {
+//        console.error(
+//            "Error al crear el alumno:",
+//            error.response ? error.response.data : error.message
+//        );
+//        throw error;
+//    }
+//};
 
 // Actualizar Alumno
 export const updateAlumnoRequest = (id, alumno) =>
