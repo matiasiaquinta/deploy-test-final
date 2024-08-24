@@ -1,7 +1,11 @@
-import Cookies from "js-cookie";
-
 import { createContext, useContext, useEffect, useState } from "react";
-import { loginRequest, registerRequest, verifyTokenRequest } from "../api/auth";
+import {
+    loginRequest,
+    registerRequest,
+    verifyTokenRequest,
+    logoutRequest,
+} from "../api/auth";
+import Cookies from "js-cookie";
 
 export const AuthContext = createContext();
 
@@ -9,73 +13,91 @@ export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
         throw new Error("useAuth must be used within an AuthProvider");
-    } else {
-        return context;
     }
+    return context;
 };
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    //para saber si ya inicio sesion
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    //para leer los errores del backend
     const [errors, setErrors] = useState([]);
-    //para hacer un cargador y evitar errores
     const [loading, setLoading] = useState(true);
 
-    //esto va a recibir los datos del usuario (registro)
     const signup = async (user) => {
         try {
             const res = await registerRequest(user);
-            //console.log(res.data);
+            // Guarda el token en localStorage
+            localStorage.setItem("token", res.data.token);
             setUser(res.data);
             setIsAuthenticated(true);
         } catch (error) {
-            //console.log(error);
-            //console.log(error.response);
-            setErrors(error.response.data);
+            setErrors(error.response ? error.response.data : [error.message]);
         }
     };
 
-    //Espera los datos para logearse (login)
     const signin = async (user) => {
         try {
             const res = await loginRequest(user);
-
-            // Verifica el contenido de la respuesta
-            console.log("Response Data:", res.data);
-
-            // Almacena el token en localStorage
-            if (res.data.token) {
-                localStorage.setItem("token", res.data.token);
-                console.log(
-                    "Token stored in localStorage:",
-                    localStorage.getItem("token")
-                );
-            } else {
-                console.error("Token not found in response");
-            }
-
+            // Guarda el token en localStorage
+            localStorage.setItem("token", res.data.token);
+            // Sincroniza el token con las cookies del backend
+            await syncTokenWithCookies(res.data.token);
             setUser(res.data);
             setIsAuthenticated(true);
         } catch (error) {
-            console.log(error);
-            if (Array.isArray(error.response.data)) {
-                return setErrors(error.response.data);
-            } else {
-                setErrors([error.response.data.message]);
-            }
+            setErrors(error.response ? error.response.data : [error.message]);
         }
     };
 
-    //logout
-    const logout = () => {
-        Cookies.remove("token");
-        setIsAuthenticated(false);
-        setUser(null);
+    const logout = async () => {
+        try {
+            await logoutRequest();
+            // Elimina el token del localStorage
+            localStorage.removeItem("token");
+            setIsAuthenticated(false);
+            setUser(null);
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
     };
 
-    //para borrar los errores a los 5 segundos
+    const syncTokenWithCookies = async (token) => {
+        try {
+            await axios.post(
+                "/api/auth/sync-token",
+                { token },
+                { withCredentials: true }
+            );
+        } catch (error) {
+            console.error("Error syncing token with cookies:", error);
+        }
+    };
+
+    useEffect(() => {
+        async function checkLogin() {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                setIsAuthenticated(false);
+                setUser(null);
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const res = await verifyTokenRequest();
+                setIsAuthenticated(true);
+                setUser(res.data);
+            } catch (error) {
+                console.error("Error verifying token:", error);
+                setIsAuthenticated(false);
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        }
+        checkLogin();
+    }, []);
+
     useEffect(() => {
         if (errors.length > 0) {
             const timer = setTimeout(() => {
@@ -85,54 +107,9 @@ export const AuthProvider = ({ children }) => {
         }
     }, [errors]);
 
-    //para que al recargar la web no se pierda la autenticación
-    useEffect(() => {
-        async function checkLogin() {
-            const cookies = Cookies.get();
-            //console.log(cookies);
-
-            /*
-                Aca valida si hay token.
-                Si no hay -> autenticación false, usuario no hay y no esta cargando
-            */
-            if (!cookies.token) {
-                setIsAuthenticated(false);
-                setUser(null);
-                setLoading(false);
-                return;
-            } else {
-                /*
-                    Aca es si hay token.
-                    Pero si no hay datos del backend.
-                    Si hay -> guarda los datos
-                */
-                try {
-                    const res = await verifyTokenRequest(cookies.token);
-                    //console.log(res);
-                    if (!res.data) {
-                        setIsAuthenticated(false);
-                        setLoading(false);
-                        return;
-                    } else {
-                        setIsAuthenticated(true);
-                        setUser(res.data);
-                        setLoading(false);
-                    }
-                } catch (error) {
-                    //console.log(error)
-                    setIsAuthenticated(false);
-                    setUser(null);
-                    setLoading(false);
-                }
-            }
-        }
-        checkLogin();
-    }, []);
-
     return (
         <AuthContext.Provider
             value={{
-                //exporto las variables:
                 signup,
                 signin,
                 logout,
