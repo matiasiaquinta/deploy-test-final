@@ -19,13 +19,13 @@ import { getAlumnosPagos } from "../controllers/pago.controller.js";
 const router = Router();
 
 // Ruta para mostrar todos los alumnos
-router.get("/alumnos", auth, getAlumnos);
+router.get("/alumnos", getAlumnos);
 
 // Ruta para mostrar información de todos los alumnos
-router.get("/alumnos/stats", auth, getAlumnosStats);
+router.get("/alumnos/stats", getAlumnosStats);
 
 // Ruta para mostrar pagos en Reportes
-router.get("/alumnos/pagos", auth, getAlumnosPagos);
+router.get("/alumnos/pagos", getAlumnosPagos);
 
 // Ruta para obtener el esquema de Alumno
 /* router.get("/schema/alumno", auth, (req, res) => {
