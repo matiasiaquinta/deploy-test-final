@@ -1,6 +1,7 @@
+import Cookies from "js-cookie";
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { loginRequest, registerRequest, verifyTokenRequest } from "../api/auth";
-import Cookies from "js-cookie";
 
 export const AuthContext = createContext();
 
@@ -41,8 +42,8 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await loginRequest(user);
 
-            localStorage.setItem("token", res.data.token);
-            console.log(res.data.token);
+            //localStorage.setItem("token", res.data.token);
+            //console.log(res.data.token);
 
             setUser(res.data);
             setIsAuthenticated(true);
